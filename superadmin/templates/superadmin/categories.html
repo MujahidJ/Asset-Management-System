@@ -1,0 +1,87 @@
+{% extends "superadmin/layout.html" %} 
+
+{% block body %}
+
+<div class="home-route">
+<a href="{% url 'home'%}">Home</a>
+</div>
+<h2 class="name-class">Categories</h2>
+    <div class="container">
+      <div id="category-table-container" data-category_list="{% url 'categories' %}"></div>
+{% if Categories %}
+    <div class="table-container">
+    <table>
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in Categories %}
+            <tr data-id="{{category.id}}">
+                <td>{{forloop.counter}}</td>
+                <td>{{ category.category }}</td>
+                <td>{{ category.categorytype }}</td>
+                <td>
+                    <button class="btn edit-category-btn" data-toggle="modal" data-target="#editCategoryModal" data-category_id="{{ category.id }}" data-edit_category_url="{% url 'edit_category' category.id %}">Edit</button>
+                    <button class="btn delete-category-btn" data-category_id="{{ category.id }}" data-delete_category_url="{% url 'delete_category' category.id %}">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+  {% else %}
+  <p class="no-records-message">No category available.</p>
+  {% endif %}
+
+    <h2 class="h2_class">Add Category</h2>
+    <div class="form-cont">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-input">
+        <input type="text" name="category" placeholder="Category" id="category">
+        <input type="text" name="categorytype" placeholder="Category Type" id="categorytype">
+        </div>
+        <button class="button" type="submit" name="action" value="save" id="save">Save</button>
+        <button class="button" type="submit" name="action" value="save_and_add" id="save_and_add">Save And Add Another</button>
+        <button class="button" type="submit" name="action" value="add_category" id="add_category">Add Category Only</button>
+        {% if display_category_type_dropdown %}
+        <select name="categorytype">
+            {% for category_type in existing_category_types %}
+            <option value="{{category_type}}">{{category_type}}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+    </form>
+    </div>
+</div>
+
+<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editCategoryModalLabel">Edit Categories</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="editCategoryForm" method="POST">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="form-input">
+            <input type="text" name="category" placeholder="Category" id="edit_category">
+            <input type="text" name="categorytype" placeholder="Category Type" id="edit_categorytype">
+            </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

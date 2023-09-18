@@ -1,0 +1,99 @@
+{% extends "superadmin/layout.html" %}
+
+{% block body %}
+<div class="home-route">
+<a href="{% url 'home' %}">Home</a>
+</div>
+<h1 class="name-class">Vendors</h1>
+<div class="container">
+<div id="vendor-table-container" data-vendor_list="{% url 'vendors' %}">
+    {% if Vendors %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Vendor</th>
+                    <th>Contact</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vendor in Vendors %}
+                <tr data-id="{{vendor.id}}">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ vendor.name }}</td>
+                    <td>{{ vendor.contact }}</td>
+                    <td>{{ vendor.countries }}</td>
+                    <td>{{ vendor.cities }}</td>
+                    <td>{{ vendor.description }}</td>
+                    <td>
+                        <button class="custom-button edit-vendor-btn" data-toggle="modal" data-target="#editVendorModal" data-vendor_id="{{ vendor.id }}" data-edit_vendor_url="{% url 'edit_vendor' vendor.id %}">Edit</button>
+                        <button class="custom-button delete-vendor-btn" data-vendor_id="{{ vendor.id }}" data-delete_vendor_url="{% url 'delete_vendor' vendor.id %}">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No Vendor available.</p>
+    {% endif %}
+    </div>
+    <h2 class="h2_class">Add Vendor</h2>
+    <div class="vendors">
+    <div class="form-cont">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-input">
+                <input type="text" name="name" id="name" placeholder="Name">
+                <input type="tel" name="contact" id="contact" placeholder="Contact">
+                <input type="text" list="countryList" id="countryInput" name="countries" placeholder="Country">
+                    <datalist id="countryList">
+                </datalist>
+              <input type="text" id="cityInput" name="cities" placeholder="City">
+              <textarea id="description" name="description" placeholder="Description (optional)"></textarea>
+            </div>
+            <button class="custom-button" type="submit" name="action" value="save" id="save">Save</button>
+            <button class="custom-button" type="submit" name="action" value="save_and_add" id="save_and_add">Save and Add Another</button>
+        </form>
+    </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editVendorModal" tabindex="-1" role="dialog" aria-labelledby="editVendorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editVendorModalLabel">Edit Vendor</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="editVendorForm" method="POST">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="form-input">
+            <input type="text" id="edit_name" name="name" placeholder="Name">
+            <input type="text" id="edit_contact" name="contact" placeholder="Contact">
+            <input type="text" list="countryList" id="edit_countryInput" name="countries" placeholder="Country">
+            <datalist id="edit_countryList">
+        </datalist>
+        <input type="text" id="edit_cityInput" name="cities" placeholder="City">
+            <textarea id="edit_description" name="description"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  
+{% endblock %}

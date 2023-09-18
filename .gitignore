@@ -1,0 +1,5 @@
+staticfiles/
+*.log
+*.tmp
+.vscode
+settings.py
