@@ -1,12 +1,15 @@
 {% extends "superadmin/layout.html" %}
 
 {% block body %}
+
+
 <div class="home-route">
 <a href="{% url 'home' %}">Home</a>
 </div>
 <h1 class="name-class">Administrators</h1>
 <div class="container">
-  <div id="admin-table-container" data-admin_list="{% url 'administrators' %}"></div>
+  <div class="admin-table-container" data-admin_list="{% url 'administrators' %}">
+  {% if Administrators %}
     <div class="table-container">
 	        <table>
           <thead>
@@ -17,20 +20,24 @@
             <th>Action</th>
         </tr>
         </thead>
-        {% for admin in Administrators %}
         <tbody>
+          {% for admin in Administrators %}
         <tr data-id="{{admin.id}}">
             <td>{{forloop.counter}}</td>
             <td>{{admin.adminname}}</td>
             <td>{{admin.adminid}}</td>
             <td>
-                <button class="button edit-admin-btn" data-toggle="modal" data-target="#editAdminModal" data-admin_id="{{ admin.id }}" data-edit_admin_url="{% url 'edit_admin' admin.id %}">Edit</button>
-                <button class="button delete-admin-btn" data-admin_id="{{ admin.id }}" data-delete_admin_url="{% url 'delete_admin' admin.id %}">Delete</button>
+                <button class="custom-button edit-admin-btn" data-toggle="modal" data-target="#editAdminModal" data-admin_id="{{ admin.id }}" data-edit_admin_url="{% url 'edit_admin' admin.id %}">Edit</button>
+                <button class="custom-button delete-admin-btn" data-admin_id="{{ admin.id }}" data-delete_admin_url="{% url 'delete_admin' admin.id %}">Delete</button>
             </td>
         </tr>
         {% endfor %}
         </tbody>
 	</table>
+    </div>
+    {% else %}
+    <p>No Admin available.</p>
+    {% endif %}
     </div>
     <h2 class="h2_class">Add Administrator</h2>
 
@@ -41,8 +48,8 @@
         <input type="text" placeholder="Admin ID" name="adminid" id="adminid">
         <input type="text" placeholder="Admin Name" name="adminname" id="adminName">
     </div>
-    <button type="submit" class="button" name="action" value="save" id="save">Save</button>
-    <button type="submit" class="button" name="action" value="save_and_add" id="save_and_add">Save and Add Another</button>
+    <button type="submit" class="custom-button" name="action" value="save" id="save">Save</button>
+    <button type="submit" class="custom-button" name="action" value="save_and_add" id="save_and_add">Save and Add Another</button>
     </form>
     </div>
     </div>
@@ -64,7 +71,7 @@
                     <input type="text" placeholder="Admin Name" name="adminname" id="edit_adminname">
                 </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="custom-button btn-primary" id="updateAdminButton">Update</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
               </div>
             </form>

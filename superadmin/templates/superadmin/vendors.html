@@ -1,12 +1,19 @@
 {% extends "superadmin/layout.html" %}
 
 {% block body %}
+
+{% load static %}
+
+   <script src="{% static 'superadmin/javascript/app.js' %}">
+    
+   </script>
+
 <div class="home-route">
 <a href="{% url 'home' %}">Home</a>
 </div>
 <h1 class="name-class">Vendors</h1>
 <div class="container">
-<div id="vendor-table-container" data-vendor_list="{% url 'vendors' %}">
+<div class="vendor-table-container" data-vendor_list="{% url 'vendors' %}">
     {% if Vendors %}
     <div class="table-container">
         <table>
@@ -78,15 +85,15 @@
           <div class="modal-body">
             <div class="form-input">
             <input type="text" id="edit_name" name="name" placeholder="Name">
-            <input type="text" id="edit_contact" name="contact" placeholder="Contact">
-            <input type="text" list="countryList" id="edit_countryInput" name="countries" placeholder="Country">
+            <input type="text" id="edit_contact" name="contact" placeholder="Contact" tabindex="1">
+            <input type="text" list="edit_countryList" id="edit_countryInput" name="countries" placeholder="Country">
             <datalist id="edit_countryList">
-        </datalist>
+            </datalist>
         <input type="text" id="edit_cityInput" name="cities" placeholder="City">
             <textarea id="edit_description" name="description"></textarea>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="custom-button btn-primary" id="updateVendorButton">Update</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </form>

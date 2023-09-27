@@ -1,0 +1,23 @@
+<table>
+    <thead>
+      <tr>
+      <th>S/N</th>
+      <th>Name</th>
+      <th>ID</th>
+      <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+    {% for admin in Administrators %}
+  <tr data-id="{{admin.id}}">
+      <td>{{forloop.counter}}</td>
+      <td>{{admin.adminname}}</td>
+      <td>{{admin.adminid}}</td>
+      <td>
+          <button class="custom-button edit-admin-btn" data-toggle="modal" data-target="#editAdminModal" data-admin_id="{{ admin.id }}" data-edit_admin_url="{% url 'edit_admin' admin.id %}">Edit</button>
+          <button class="custom-button delete-admin-btn" data-admin_id="{{ admin.id }}" data-delete_admin_url="{% url 'delete_admin' admin.id %}">Delete</button>
+      </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>

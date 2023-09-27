@@ -4,21 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
             $(this).find("td:first").text(index + 1);
         });
     }
-    function refreshVendorTable() {
-        vendorList = $("#vendor-table-container").data("vendor_list");
-        console.log(vendorList)
-    }
 
-    function refreshAdminTable() {
-        AdminList = $("#admin-table-container").data("admin_list");
-        console.log(AdminList)
-    }
-    
-    function refreshCategoryTable() {   
-        CategoryList = $("#category-table-container").data("category_list");
-    }
-  
-    // Common function to show success message
     function showSuccessMessage(message) {
         Swal.fire({
             icon: 'success',
@@ -26,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Common function to show error message
     function showErrorMessage(message) {
         Swal.fire({
             icon: 'error',
@@ -48,67 +33,72 @@ document.addEventListener("DOMContentLoaded", function () {
         var $tableBody = $table.find("tbody");
         var $tableHead = $table.find("thead");
 
-        console.log("Table Rows Length: ", $tableBody.find("tr").length);
-
         if ($tableBody.find("tr").length === 0) {
             $tableHead.hide();
             noRecordsMessage();
-            console.log('No table.')
         } else {
             $tableHead.show();
         }
     }
     
-    // Function to handle admin editing
-    function editAdmin(adminId, editAdminURL) {
-        console.log(editAdminURL)
+
+    function editAdmin(AdminId, editAdminURL) {
         $.ajax({
             url: editAdminURL,
             method: "GET",
             success: function (data) {
-                $("#edit_adminname").val(data.adminname);
+    
                 $("#edit_adminid").val(data.adminid);
+                $("#edit_adminname").val(data.adminname);
 
                 $("#editAdminModal").modal('show');
             },
             error: function (error) {
                 console.log("AJAX Error:", error);
-                alert("Unable to fetch admin data.");
+                alert("Unable to fetch Admin data.");
                 $('#editAdminModal').modal('hide');
             }
         });
     }
 
-    // Function to update an admin
-    function updateAdmin(editAdminURL, csrfToken) {
+    function updateAdmin(updateAdminURL, csrfToken) {
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrfToken); 
+            },
+        });
+    
         $.ajax({
-            url: editAdminURL,
+            url: updateAdminURL,
             method: "POST",
-            data: {
-                csrfmiddlewaretoken: csrfToken,
+            dataType: 'json',
+            headers: {
+                "Accept": "application/json"
+            },
+            contentType: "application/json",
+            data: JSON.stringify({
                 adminid: $("#edit_adminid").val(),
                 adminname: $("#edit_adminname").val(),
-            },
+            }),
             success: function (response) {
                 if (response.success) {
                     $("#editAdminModal").modal('hide');
                     showSuccessMessage('Admin Updated Successfully');
-                    refreshAdminTable();
+    
+                    
+                    $(".admin-table-container").html(response.admin_table_html);
                 } else {
                     showErrorMessage('Unable to update admin record on the server');
                 }
             },
-            error: function (error) {
-                console.log("AJAX Error:", error);
+            error: function (xhr, status, error) {
+                console.log("AJAX Error:", xhr.status, error);
                 showErrorMessage('Unable to update admin record');
             }
         });
     }
 
-    // Function to delete an admin
     function deleteAdmin($this, $row, deleteAdminURL, csrfToken) {
-        console.log(deleteAdminURL)
-        console.log(csrfToken)
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -131,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         $row.remove();
                         updateSerialNumbers();
                         showSuccessMessage('Admin Deleted Successfully');
-                        refreshAdminTable()
                         updateTableVisibility()
 
                     },
@@ -145,61 +134,66 @@ document.addEventListener("DOMContentLoaded", function () {
         
     }
 
-    // Function to handle category editing
-    function editCategory(categoryId, editCategoryURL) {
-        console.log(editCategoryURL)
-        console.log("Editing category with ID:", categoryId);
-        console.log("Edit Category URL:", editCategoryURL);
-        $.ajax({
-            url: editCategoryURL,
-            method: "GET",
-            success: function (data) {
-                $("#edit_category").val(data.category);
-                $("#edit_categorytype").val(data.categorytype);
 
-                $("#editCategoryModal").modal('show');
+function editCategory(categoryId, editCategoryURL) {
+    $.ajax({
+        url: editCategoryURL,
+        method: "GET",
+        success: function (data) {
+            $("#edit_category").val(data.category);
+            $("#edit_categorytype").val(data.categorytype);
+            $("#editCategoryModal").modal('show');
+        },
+        error: function (error) {
+            console.log("AJAX Error:", error);
+            alert("Unable to fetch category data.");
+            $('#editCategoryModal').modal('hide');
+        }
+    });
+}
 
-                console.log(data)
-            },
-            error: function (error) {
-                console.log("AJAX Error:", error);
-                alert("Unable to fetch category data.");
-                $('#editCategoryModal').modal('hide');
+
+function updateCategory(updateCategoryURL, csrfToken) {
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrfToken);
+        },
+    });
+
+    $.ajax({
+        url: updateCategoryURL,
+        method: "POST",
+        dataType: 'json',
+        headers: {
+            "Accept": "application/json"
+        },
+        contentType: "application/json",
+        data: JSON.stringify({
+            category: $("#edit_category").val(),
+            categorytype: $("#edit_categorytype").val(),
+        }),
+        success: function (response) {
+            
+            if (response.success) {
+                $("#editCategoryModal").modal('hide');
+                showSuccessMessage('Category Updated Successfully');
+
+          $(".category-table-container").html(response.category_table_html);
+   
+            } else {
+                showErrorMessage('Unable to update category record on the server');
             }
-        });
-    }
+        },
+        error: function (xhr, status, error) {
+            console.log("AJAX Error:", xhr.status, error);
+            showErrorMessage('Unable to update category record');
+        }
+    });
+}
 
-    // Function to update a category
-    function updateCategory(editCategoryURL, csrfToken) {
-        $.ajax({
-            url: editCategoryURL,
-            method: "POST",
-            data: {
-                csrfmiddlewaretoken: csrfToken,
-                category: $("#edit_category").val(),
-                categorytype: $("#edit_categorytype").val(),
-            },
-            success: function (response) {
-                if (response.success) {
-                    $("#editCategoryModal").modal('hide');
-                    showSuccessMessage('Category Updated Successfully');
-                    refreshCategoryTable();
-                } else {
-                    showErrorMessage('Unable to update category record on the server');
-                }
-                console.log($("#edit_categorytype").val())
-            },
-            error: function (error) {
-                console.log("AJAX Error:", error);
-                showErrorMessage('Unable to update category record');
-            }
-        });
-    }
-
-    // Function to delete a category
     function deleteCategory($this, $row, deleteCategoryURL, csrfToken) {
-        console.log(deleteCategoryURL)
-        console.log(csrfToken)
+       
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -222,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         $row.remove();
                         updateSerialNumbers();
                         showSuccessMessage('Category Deleted Successfully');
-                        refreshCategoryTable()
+                       
 
                         updateTableVisibility()
                     },
@@ -235,24 +229,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Function to edit a vendor
     function editVendor(vendorId, editVendorURL) {
         $.ajax({
             url: editVendorURL,
             method: "GET",
             success: function (data) {
-                console.log("Fetched data:", data);
-    
-                // Check if this is being logged
-                console.log("Inside success callback");
-    
-                // Check if the country input is being found
-                console.log("Country input:", $("#edit_countryInput"));
-    
-                // Populate the country input
-                $("#edit_countryInput").val(data.countries);
-    
-                // Show the modal
+
+                $("#edit_name").val(data.name)
+                $("#edit_contact").val(data.contact)
+                $("#edit_countryInput").val(data.countries)
+                $("#edit_cityInput").val(data.cities)
+                $("#edit_description").val(data.description)
                 $("#editVendorModal").modal('show');
             },
             error: function (error) {
@@ -263,48 +250,55 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-
-    // Function to update a vendor
-    function updateVendor(editVendorURL, csrfToken) {
+    function updateVendor(updateVendorURL, csrfToken) {
+       
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrfToken); 
+            },
+        });
+    
+      
+    
         $.ajax({
-            url: editVendorURL,
+            url: updateVendorURL,
             method: "POST",
-            data: {
-                csrfmiddlewaretoken: csrfToken,
+            dataType: 'json',
+            headers: {
+                "Accept": "application/json"
+            },
+            contentType: "application/json",
+            data: JSON.stringify({
                 name: $("#edit_name").val(),
                 contact: $("#edit_contact").val(),
                 countries: $("#edit_countryInput").val(),
-                cities: $("#edit_cities").val(),
+                cities: $("#edit_cityInput").val(),
                 description: $("#edit_description").val(),
-            },
+            }),
             success: function (response) {
+               
                 if (response.success) {
                     $("#editVendorModal").modal('hide');
                     showSuccessMessage('Vendor Updated Successfully');
-                    refreshVendorTable();
+                    
+                  
+                    $(".vendor-table-container").html(response.vendor_table_html);
                 } else {
                     showErrorMessage('Unable to update vendor record on the server');
                 }
             },
-            error: function (error) {
-                console.log("AJAX Error:", error);
+            error: function (xhr, status, error) {
+                console.log("AJAX Error:", xhr.status, error);
                 showErrorMessage('Unable to update vendor record');
             }
         });
     }
-
-    const countryInput = document.getElementById("edit_countryInput");
-    const countryList  = document.getElementById("edit_countryList");
-
-    countryInput.addEventListener('input', function(){
-        countryInput.value = document.querySelector(`option[value='${countryInput.value}']`)?.value || '';
-    })
+    
+    
 
 
-    // Function to delete a vendor
     function deleteVendor($this, $row, deleteVendorURL, csrfToken) {
-        console.log(deleteVendorURL)
-        console.log(csrfToken)
+      
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -327,7 +321,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         $row.remove();
                         updateSerialNumbers();
                         showSuccessMessage('Vendor Deleted Successfully');
-                        refreshVendorTable()
                         updateTableVisibility()
                     },
                     error: function (error) {
@@ -338,21 +331,32 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+ 
+    var updateAdminURL = $(this).closest(".modal").find(".edit-admin-btn").data("edit_admin_url");
 
-
-    // Add event handlers for admin and category and vendors actions
     $(".edit-admin-btn").click(function () {
         var editAdminURL = $(this).data("edit_admin_url");
         var adminId = $(this).data("admin_id");
         editAdmin(adminId, editAdminURL);
+    
+        updateAdminURL = editAdminURL;
     });
-
+    
     $("#editAdminForm").submit(function (e) {
         e.preventDefault();
         var editAdminURL = $(this).attr("action");
         var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
         updateAdmin(editAdminURL, csrfToken);
     });
+    
+    
+    $("#updateAdminButton").click(function (e) {
+        e.preventDefault();
+        var csrfToken =  $("input[name=csrfmiddlewaretoken]").val();
+    
+        updateAdmin(updateAdminURL, csrfToken);
+    });
+    
 
     $(".table-container").on("click", ".delete-admin-btn", function () {
         var $this = $(this);
@@ -362,17 +366,31 @@ document.addEventListener("DOMContentLoaded", function () {
         deleteAdmin($this, $row, deleteAdminURL, csrfToken);
     });
 
+   
+    var updateCategoryURL = $(this).closest(".modal").find(".edit-category-btn").data("edit_category_url");
+
+
     $(".edit-category-btn").click(function () {
         var editCategoryURL = $(this).data("edit_category_url");
         var categoryId = $(this).data("category_id");
         editCategory(categoryId, editCategoryURL);
+    
+        updateCategoryURL = editCategoryURL;
     });
-
+    
     $("#editCategoryForm").submit(function (e) {
         e.preventDefault();
         var editCategoryURL = $(this).attr("action");
         var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
         updateCategory(editCategoryURL, csrfToken);
+    });
+    
+    
+    $("#updateCategoryButton").click(function (e) {
+        e.preventDefault();
+        var csrfToken =  $("input[name=csrfmiddlewaretoken]").val();
+    
+        updateCategory(updateCategoryURL, csrfToken);
     });
 
     $(".table-container").on("click", ".delete-category-btn", function () {
@@ -383,21 +401,34 @@ document.addEventListener("DOMContentLoaded", function () {
         deleteCategory($this, $row, deleteCategoryURL, csrfToken);
     });
     
-        // Add event handlers for vendor actions
+    var updateVendorURL = $(this).closest(".modal").find(".edit-vendor-btn").data("edit_vendor_url");
+
+       
         $(".edit-vendor-btn").click(function () {
             var editVendorURL = $(this).data("edit_vendor_url");
             var vendorId = $(this).data("vendor_id");
             editVendor(vendorId, editVendorURL);
+
+            updateVendorURL = editVendorURL;
         });
     
         $("#editVendorForm").submit(function (e) {
-            // e.preventDefault();
+            e.preventDefault();
             var editVendorURL = $(this).attr("action");
             var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
             updateVendor(editVendorURL, csrfToken);
         });
-    
-        $(".delete-vendor-btn").click(function () {
+
+
+        $("#updateVendorButton").click(function (e) {
+            e.preventDefault();
+            var csrfToken =  $("input[name=csrfmiddlewaretoken]").val();
+        
+            updateVendor(updateVendorURL, csrfToken);
+        });
+
+
+        $(".table-container").on("click", ".delete-vendor-btn", function () {
             var $this = $(this);
             var $row = $this.closest('tr');
             var deleteVendorURL = $this.data("delete_vendor_url");

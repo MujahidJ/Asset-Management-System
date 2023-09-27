@@ -1,0 +1,29 @@
+    <table>
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Vendor</th>
+                <th>Contact</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vendor in Vendors %}
+            <tr data-id="{{vendor.id}}">
+                <td>{{forloop.counter}}</td>
+                <td>{{ vendor.name }}</td>
+                <td>{{ vendor.contact }}</td>
+                <td>{{ vendor.countries }}</td>
+                <td>{{ vendor.cities }}</td>
+                <td>{{ vendor.description }}</td>
+                <td>
+                    <button class="custom-button edit-vendor-btn" data-toggle="modal" data-target="#editVendorModal" data-vendor_id="{{ vendor.id }}" data-edit_vendor_url="{% url 'edit_vendor' vendor.id %}">Edit</button>
+                    <button class="custom-button delete-vendor-btn" data-vendor_id="{{ vendor.id }}" data-delete_vendor_url="{% url 'delete_vendor' vendor.id %}">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>

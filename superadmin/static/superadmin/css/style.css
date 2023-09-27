@@ -257,6 +257,9 @@ textarea#description{
   resize: vertical;
 }
 
+#edit_countryInput{
+  z-index: 1050;
+}
 
 
 /* Add this CSS code to your stylesheet */
@@ -289,7 +292,7 @@ textarea#description{
   background-color: white;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  z-index: 3000;
 }
 
 .dialog-content {

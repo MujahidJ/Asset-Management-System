@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 class SuperAdmin(models.Model):
     username = models.CharField(max_length=40)
     email = models.CharField(max_length=70)

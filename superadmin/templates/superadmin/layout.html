@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{% static 'superadmin/javascript/crud.js' %}"></script>
-    <script src="{% static 'superadmin/javascript/app.js' %}"></script>
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,11 +19,7 @@
 </head>
 <body>
     {% block body %}
-    <div
-    id="script-data"
-    data-edit-url="{% url 'edit_vendor' 0 %}"
-    data-delete-url="{% url 'delete_vendor' 0 %}"
-></div>
+
     
     {% endblock %}
 </body>

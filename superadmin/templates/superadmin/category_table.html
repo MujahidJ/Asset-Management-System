@@ -1,0 +1,23 @@
+<table>
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in Categories %}
+            <tr data-id="{{category.id}}">
+                <td>{{forloop.counter}}</td>
+                <td>{{ category.category }}</td>
+                <td>{{ category.categorytype }}</td>
+                <td>
+                    <button class="custom-button edit-category-btn" data-toggle="modal" data-target="#editCategoryModal" data-category_id="{{ category.id }}" data-edit_category_url="{% url 'edit_category' category.id %}">Edit</button>
+                    <button class="custom-button delete-category-btn" data-category_id="{{ category.id }}" data-delete_category_url="{% url 'delete_category' category.id %}">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
