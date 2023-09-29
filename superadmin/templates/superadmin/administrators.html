@@ -8,7 +8,7 @@
 </div>
 <h1 class="name-class">Administrators</h1>
 <div class="container">
-  <div class="admin-table-container" data-admin_list="{% url 'administrators' %}">
+  <div class="admin-table-container">
   {% if Administrators %}
     <div class="table-container">
 	        <table>
@@ -40,17 +40,18 @@
     {% endif %}
     </div>
     <h2 class="h2_class">Add Administrator</h2>
-
+    <div class="admin-form">
     <div class="form-cont">
     <form method="POST">
         {% csrf_token %}
         <div class="form-input">
-        <input type="text" placeholder="Admin ID" name="adminid" id="adminid">
-        <input type="text" placeholder="Admin Name" name="adminname" id="adminName">
+        <input type="text" placeholder="Admin ID" name="adminid" id="adminid" required>
+        <input type="text" placeholder="Admin Name" name="adminname" id="adminName" required>
     </div>
     <button type="submit" class="custom-button" name="action" value="save" id="save">Save</button>
     <button type="submit" class="custom-button" name="action" value="save_and_add" id="save_and_add">Save and Add Another</button>
     </form>
+    </div>
     </div>
     </div>
     
@@ -67,8 +68,8 @@
               {% csrf_token %}
               <div class="modal-body">
                 <div class="form-input">
-                    <input type="text" placeholder="Admin ID" name="adminid" id="edit_adminid">
-                    <input type="text" placeholder="Admin Name" name="adminname" id="edit_adminname">
+                    <input type="text" placeholder="Admin ID" name="adminid" id="edit_adminid" required>
+                    <input type="text" placeholder="Admin Name" name="adminname" id="edit_adminname" required>
                 </div>
               <div class="modal-footer">
                 <button type="submit" class="custom-button btn-primary" id="updateAdminButton">Update</button>

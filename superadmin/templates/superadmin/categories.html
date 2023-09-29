@@ -7,7 +7,7 @@
 </div>
 <h2 class="name-class">Categories</h2>
     <div class="container">
-      <div class="category-table-container" data-category_list="{% url 'categories' %}">
+      <div class="category-table-container">
 {% if Categories %}
     <div class="table-container">
     <table>
@@ -38,20 +38,22 @@
   {% else %}
   <p class="no-records-message">No category available.</p>
   {% endif %}
-  </div>
+</div>
     <h2 class="h2_class">Add Category</h2>
+    <div class="category-form">
     <div class="form-cont">
     <form method="POST">
         {% csrf_token %}
         <div class="form-input">
-        <input type="text" name="category" placeholder="Category" id="category">
-        <input type="text" name="categorytype" placeholder="Category Type" id="categorytype">
+        <input type="text" name="category" placeholder="Category" id="category" required>
+        <input type="text" name="categorytype" placeholder="Category Type" id="categorytype" required>
         </div>
         <button class="custom-button" type="submit" name="action" value="save" id="save">Save</button>
         <button class="custom-button" type="submit" name="action" value="save_and_add" id="save_and_add">Save And Add Another</button>
         <button class="custom-button" type="submit" name="action" value="add_category" id="add_category">Add Category Only</button>
     </form>
     </div>
+</div>
 </div>
 
 <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">

@@ -51,12 +51,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 $("#edit_adminid").val(data.adminid);
                 $("#edit_adminname").val(data.adminname);
 
-                $("#editAdminModal").modal('show');
+                $("#editAdminmodal").modal('show');
             },
             error: function (error) {
                 console.log("AJAX Error:", error);
                 alert("Unable to fetch Admin data.");
-                $('#editAdminModal').modal('hide');
+                $('#editAdminmodal').modal('hide');
             }
         });
     }
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }),
             success: function (response) {
                 if (response.success) {
-                    $("#editAdminModal").modal('hide');
+                    $("#editAdminmodal").modal('hide');
                     showSuccessMessage('Admin Updated Successfully');
     
                     
@@ -135,25 +135,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-function editCategory(categoryId, editCategoryURL) {
+function editCatemodalry(catemodalryId, editCatemodalryURL) {
     $.ajax({
-        url: editCategoryURL,
+        url: editCatemodalryURL,
         method: "GET",
         success: function (data) {
-            $("#edit_category").val(data.category);
-            $("#edit_categorytype").val(data.categorytype);
-            $("#editCategoryModal").modal('show');
+            $("#edit_catemodalry").val(data.catemodalry);
+            $("#edit_catemodalrytype").val(data.catemodalrytype);
+            $("#editCatemodalrymodal").modal('show');
         },
         error: function (error) {
             console.log("AJAX Error:", error);
-            alert("Unable to fetch category data.");
-            $('#editCategoryModal').modal('hide');
+            alert("Unable to fetch catemodalry data.");
+            $('#editCatemodalrymodal').modal('hide');
         }
     });
 }
 
 
-function updateCategory(updateCategoryURL, csrfToken) {
+function updateCatemodalry(updateCatemodalryURL, csrfToken) {
 
     $.ajaxSetup({
         beforeSend: function (xhr, settings) {
@@ -162,7 +162,7 @@ function updateCategory(updateCategoryURL, csrfToken) {
     });
 
     $.ajax({
-        url: updateCategoryURL,
+        url: updateCatemodalryURL,
         method: "POST",
         dataType: 'json',
         headers: {
@@ -170,29 +170,29 @@ function updateCategory(updateCategoryURL, csrfToken) {
         },
         contentType: "application/json",
         data: JSON.stringify({
-            category: $("#edit_category").val(),
-            categorytype: $("#edit_categorytype").val(),
+            catemodalry: $("#edit_catemodalry").val(),
+            catemodalrytype: $("#edit_catemodalrytype").val(),
         }),
         success: function (response) {
             
             if (response.success) {
-                $("#editCategoryModal").modal('hide');
-                showSuccessMessage('Category Updated Successfully');
+                $("#editCatemodalrymodal").modal('hide');
+                showSuccessMessage('Catemodalry Updated Successfully');
 
-          $(".category-table-container").html(response.category_table_html);
+          $(".catemodalry-table-container").html(response.catemodalry_table_html);
    
             } else {
-                showErrorMessage('Unable to update category record on the server');
+                showErrorMessage('Unable to update catemodalry record on the server');
             }
         },
         error: function (xhr, status, error) {
             console.log("AJAX Error:", xhr.status, error);
-            showErrorMessage('Unable to update category record');
+            showErrorMessage('Unable to update catemodalry record');
         }
     });
 }
 
-    function deleteCategory($this, $row, deleteCategoryURL, csrfToken) {
+    function deleteCatemodalry($this, $row, deleteCatemodalryURL, csrfToken) {
        
         Swal.fire({
             title: "Are you sure?",
@@ -207,7 +207,7 @@ function updateCategory(updateCategoryURL, csrfToken) {
                 var $table = $(".table-container table tbody");
 
                 $.ajax({
-                    url: deleteCategoryURL,
+                    url: deleteCatemodalryURL,
                     method: "DELETE",
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("X-CSRFToken", csrfToken);
@@ -215,14 +215,14 @@ function updateCategory(updateCategoryURL, csrfToken) {
                     success: function () {
                         $row.remove();
                         updateSerialNumbers();
-                        showSuccessMessage('Category Deleted Successfully');
+                        showSuccessMessage('Catemodalry Deleted Successfully');
                        
 
                         updateTableVisibility()
                     },
                     error: function (error) {
                         console.log("AJAX Error:", error);
-                        showErrorMessage('Unable to delete category record');
+                        showErrorMessage('Unable to delete catemodalry record');
                     },
                 });
             }
@@ -240,12 +240,12 @@ function updateCategory(updateCategoryURL, csrfToken) {
                 $("#edit_countryInput").val(data.countries)
                 $("#edit_cityInput").val(data.cities)
                 $("#edit_description").val(data.description)
-                $("#editVendorModal").modal('show');
+                $("#editVendormodal").modal('show');
             },
             error: function (error) {
                 console.log("AJAX Error:", error);
                 alert("Unable to fetch vendor data.");
-                $('#editVendorModal').modal('hide');
+                $('#editVendormodal').modal('hide');
             }
         });
     }
@@ -278,7 +278,7 @@ function updateCategory(updateCategoryURL, csrfToken) {
             success: function (response) {
                
                 if (response.success) {
-                    $("#editVendorModal").modal('hide');
+                    $("#editVendormodal").modal('hide');
                     showSuccessMessage('Vendor Updated Successfully');
                     
                   
@@ -367,38 +367,38 @@ function updateCategory(updateCategoryURL, csrfToken) {
     });
 
    
-    var updateCategoryURL = $(this).closest(".modal").find(".edit-category-btn").data("edit_category_url");
+    var updateCatemodalryURL = $(this).closest(".modal").find(".edit-catemodalry-btn").data("edit_catemodalry_url");
 
 
-    $(".edit-category-btn").click(function () {
-        var editCategoryURL = $(this).data("edit_category_url");
-        var categoryId = $(this).data("category_id");
-        editCategory(categoryId, editCategoryURL);
+    $(".edit-catemodalry-btn").click(function () {
+        var editCatemodalryURL = $(this).data("edit_catemodalry_url");
+        var catemodalryId = $(this).data("catemodalry_id");
+        editCatemodalry(catemodalryId, editCatemodalryURL);
     
-        updateCategoryURL = editCategoryURL;
+        updateCatemodalryURL = editCatemodalryURL;
     });
     
-    $("#editCategoryForm").submit(function (e) {
+    $("#editCatemodalryForm").submit(function (e) {
         e.preventDefault();
-        var editCategoryURL = $(this).attr("action");
+        var editCatemodalryURL = $(this).attr("action");
         var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
-        updateCategory(editCategoryURL, csrfToken);
+        updateCatemodalry(editCatemodalryURL, csrfToken);
     });
     
     
-    $("#updateCategoryButton").click(function (e) {
+    $("#updateCatemodalryButton").click(function (e) {
         e.preventDefault();
         var csrfToken =  $("input[name=csrfmiddlewaretoken]").val();
     
-        updateCategory(updateCategoryURL, csrfToken);
+        updateCatemodalry(updateCatemodalryURL, csrfToken);
     });
 
-    $(".table-container").on("click", ".delete-category-btn", function () {
+    $(".table-container").on("click", ".delete-catemodalry-btn", function () {
         var $this = $(this);
         var $row = $this.closest('tr');
-        var deleteCategoryURL = $this.data("delete_category_url");
+        var deleteCatemodalryURL = $this.data("delete_catemodalry_url");
         var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
-        deleteCategory($this, $row, deleteCategoryURL, csrfToken);
+        deleteCatemodalry($this, $row, deleteCatemodalryURL, csrfToken);
     });
     
     var updateVendorURL = $(this).closest(".modal").find(".edit-vendor-btn").data("edit_vendor_url");

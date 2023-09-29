@@ -13,7 +13,7 @@
 </div>
 <h1 class="name-class">Vendors</h1>
 <div class="container">
-<div class="vendor-table-container" data-vendor_list="{% url 'vendors' %}">
+<div class="vendor-table-container">
     {% if Vendors %}
     <div class="table-container">
         <table>
@@ -50,18 +50,18 @@
     <p>No Vendor available.</p>
     {% endif %}
     </div>
-    <h2 class="h2_class">Add Vendor</h2>
-    <div class="vendors">
+    <h2 class="vendor_h2_class">Add Vendor</h2>
+    <div class="vendor-form">
     <div class="form-cont">
         <form method="POST">
             {% csrf_token %}
             <div class="form-input">
-                <input type="text" name="name" id="name" placeholder="Name">
-                <input type="tel" name="contact" id="contact" placeholder="Contact">
-                <input type="text" list="countryList" id="countryInput" name="countries" placeholder="Country">
+                <input type="text" name="name" id="name" placeholder="Name" required>
+                <input type="tel" name="contact" id="contact" placeholder="Contact" required>
+                <input type="text" list="countryList" id="countryInput" name="countries" placeholder="Country" required>
                     <datalist id="countryList">
                 </datalist>
-              <input type="text" id="cityInput" name="cities" placeholder="City">
+              <input type="text" id="cityInput" name="cities" placeholder="City" required>
               <textarea id="description" name="description" placeholder="Description (optional)"></textarea>
             </div>
             <button class="custom-button" type="submit" name="action" value="save" id="save">Save</button>
@@ -84,8 +84,8 @@
           {% csrf_token %}
           <div class="modal-body">
             <div class="form-input">
-            <input type="text" id="edit_name" name="name" placeholder="Name">
-            <input type="text" id="edit_contact" name="contact" placeholder="Contact" tabindex="1">
+            <input type="text" id="edit_name" name="name" placeholder="Name" required>
+            <input type="text" id="edit_contact" name="contact" placeholder="Contact">
             <input type="text" list="edit_countryList" id="edit_countryInput" name="countries" placeholder="Country">
             <datalist id="edit_countryList">
             </datalist>

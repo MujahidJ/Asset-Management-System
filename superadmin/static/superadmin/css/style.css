@@ -20,6 +20,7 @@ nav{
   overflow: hidden;
   box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
 }
+
 .container-package{
   display: flex;
 }
@@ -191,6 +192,17 @@ select#countries {
   margin-bottom: 5%;
 }
 
+.admin-table-container{
+  margin-left: 8%;
+}
+.category-table-container{
+  margin-left: 4%;
+}
+.vendor-table-container{
+  margin-left: 8%;
+
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -230,14 +242,22 @@ tr:nth-child(11) td {
 .js{
   color: rgb(28, 98, 179);
 }
+.category-form{
+  margin-left: 5%;
+}
 
-.vendors .form-cont{
+.vendor-form .form-cont{
   margin-top: -5% !important;
   margin-left: 5%;
 }
 .h2_class{
   text-align: center;
   margin-top: 16%;
+}
+.vendor_h2_class{
+  text-align: center;
+  margin-top: 10%;
+  margin-bottom: 5%;
 }
 textarea#description{
   width: 100%;
@@ -254,7 +274,7 @@ textarea#description{
   padding: 10px;
   font-size: 16px;
   color: #333;
-  resize: vertical;
+  resize: none;
 }
 
 #edit_countryInput{
