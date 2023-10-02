@@ -1,0 +1,100 @@
+{% extends "admin/layout.html" %}
+
+{% block body %}
+    <body>
+        <h1 class="label-class">Assets</h1>
+
+        <h2 class="label-class">Add Asset</h2>
+
+        <section id="asset">
+    
+            <label for="product_name">Product Name
+                
+                <input type="text" id="product_name" name="product_name" placeholder="Product Name">
+                
+            </label>
+            
+            <label for="product_category">Product Category
+
+               <select name="product_category" id="product_category">
+                <option value="disabled">Select Product Category</option>
+               </select>
+
+            </label>
+
+            <label for="product">Product
+                <input type="text" placeholder="Product" name="product" id="product">
+            </label>
+
+            <label for="vendor">Vendor
+                
+                <select name="vendor" id="vendor">
+                    <option value="disabled">Select Vendor</option>
+                </select>
+
+            </label>
+
+            <div id="asset-div">
+            <label for="asset">Asset Name
+                <input type="text" placeholder="Asset Name" name="asset" id="asset">
+            </label>
+
+            <label for="quantity">Quantity
+                <input type="text" placeholder="Quantity" name="quantity" id="quantity">
+            </label>
+
+            <label for="serial_no">Serial No
+                <input type="text" placeholder="Serial No" name="serial_no" id="serial_no">
+            </label>
+
+            <label for="model_no">Model No
+                <input type="text" placeholder="Model No" name="model_no" id="model_no">
+            </label>
+
+            <label for="cost">Cost
+                <input type="text" placeholder="Cost" name="cost" id="cost">
+            </label>
+
+            <label for="purchase_date">Purchase Date
+                <input type="date" placeholder="Purchase Date" name="purchase_date" id="purchase_date">
+            </label>
+
+            <label for="warranty">Warranty (Years)
+                <input type="text" placeholder="Warranty(Years)" name="warranty" id="warranty">
+            </label>
+
+            <label for="expiry_date">Expiry Date
+                <input type="date" placeholder="Expiry Date" name="expiry_date" id="expiry_date">
+            </label>
+
+            <label for="useful_life">Useful Life (Lifespan)
+                <input type="text" placeholder="Useful Life (Lifespan)" name="useful_life" id="useful_life">
+            </label>
+
+            <label for="location">Location
+                <input type="text" placeholder="Location" name="location" id="location">
+            </label>
+
+            <label for="size">Size
+                <input type="text" placeholder="Size" name="size" id="size">
+            </label>
+           
+            <div id="description">   
+            <label for="description">Description
+            <textarea id="description" name="description"></textarea>
+            </label>
+            </div>
+    
+            </div>
+
+            <div class="button-container">
+            <button type="submit">Submit</button>
+            </div>
+
+        </section>
+    </body>
+
+</html>
+
+{% endblock %}
+  
